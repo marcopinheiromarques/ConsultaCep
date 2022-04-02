@@ -2,7 +2,7 @@ unit uEnderecoController;
 
 interface
 
-uses System.SysUtils, uEndereco, uConsultaCepService, uIFrmEndereco;
+uses System.SysUtils, uEndereco, uConsultaCepService, uIFrmEndereco, uMensagens;
 
 type
   TEnderecoController = class
@@ -38,7 +38,7 @@ begin
     except
       on E : Exception do
       begin
-
+        Mensagem.MensagemAtencao(E.Message);
       end;
     end;
   finally

@@ -45,7 +45,7 @@ begin
     except
        on E : Exception do
        begin
-         raise Exception.Create('Não foi possível obter os dados do cep: ' + e.Message);
+         raise Exception.Create(e.Message);
        end;
     end;
   finally

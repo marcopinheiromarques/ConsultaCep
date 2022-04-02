@@ -18,20 +18,22 @@ type
       Fgia         : string;
       Fddd         : string;
       Fsiafi       : string;
+      Ferro        : boolean;
 
     protected
 
     public
-      property cep         : string read Fcep         write Fcep;
-      property logradouro  : string read Flogradouro  write Flogradouro;
-      property complemento : string read Fcomplemento write Fcomplemento;
-      property bairro      : string read Fbairro      write Fbairro;
-      property localidade  : string read Flocalidade  write Flocalidade;
-      property uf          : string read Fuf          write Fuf;
-      property ibge        : string read Fibge        write Fibge;
-      property gia         : string read Fgia         write Fgia;
-      property ddd         : string read Fddd         write Fddd;
-      property siafi       : string read Fsiafi       write Fsiafi;
+      property cep         : string  read Fcep         write Fcep;
+      property logradouro  : string  read Flogradouro  write Flogradouro;
+      property complemento : string  read Fcomplemento write Fcomplemento;
+      property bairro      : string  read Fbairro      write Fbairro;
+      property localidade  : string  read Flocalidade  write Flocalidade;
+      property uf          : string  read Fuf          write Fuf;
+      property ibge        : string  read Fibge        write Fibge;
+      property gia         : string  read Fgia         write Fgia;
+      property ddd         : string  read Fddd         write Fddd;
+      property siafi       : string  read Fsiafi       write Fsiafi;
+      property erro        : boolean read Ferro        write Ferro;
     end;
 
 
@@ -68,23 +70,31 @@ begin
   self.FUrl  := self.FUrl + vCep + '/json/';
 
   try
+    //descomentar para simular um erro de servidor inativo
     //raise Exception.Create('Error Message');
 
     vdadosApi  := self.getDadosCep<TViaCepData>();
 
     if (vdadosApi <> nil) then
     begin
-      Result            := TEndereco.Create;
-      Result.Cep        := vdadosApi.cep;
-      Result.Logradouro := vdadosApi.logradouro;
-      Result.Bairro     := vdadosApi.bairro;
-      Result.Cidade     := vdadosApi.localidade;
-      Result.Estado     := vdadosApi.uf;
+      if (not vdadosApi.erro) then
+      begin
+        Result            := TEndereco.Create;
+        Result.Cep        := vdadosApi.cep;
+        Result.Logradouro := vdadosApi.logradouro;
+        Result.Bairro     := vdadosApi.bairro;
+        Result.Cidade     := vdadosApi.localidade;
+        Result.Estado     := vdadosApi.uf;
+      end
+      else
+      begin
+        raise Exception.Create('CEP não encontrado.');
+      end;
     end;
   except
     on E : Exception do
     begin
-
+      raise Exception.Create(E.Message);
     end;
   end;
 end;

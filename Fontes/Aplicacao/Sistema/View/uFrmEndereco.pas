@@ -13,7 +13,7 @@ uses
 
 type
   TFrmEndereco = class(TForm, IFrmEndereco)
-    Button1: TButton;
+    btn_pesquisarcep: TButton;
     me_cep: TMaskEdit;
     Label1: TLabel;
     Label2: TLabel;
@@ -24,13 +24,15 @@ type
     edt_cidade: TEdit;
     Label5: TLabel;
     cmb_estado: TComboBox;
-    procedure Button1Click(Sender: TObject);
+    procedure btn_pesquisarcepClick(Sender: TObject);
     procedure me_cepKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
   private
     { Private declarations }
     Controller : TEnderecoController;
+
+    procedure LimparCampos();
   public
     { Public declarations }
     procedure setLogradouro(value : string);
@@ -48,7 +50,7 @@ implementation
 
 uses uMensagens;
 
-procedure TFrmEndereco.Button1Click(Sender: TObject);
+procedure TFrmEndereco.btn_pesquisarcepClick(Sender: TObject);
 begin
   if (Trim(me_cep.Text) = '-') then
   begin
@@ -64,6 +66,8 @@ begin
     Exit;
   end;
 
+  LimparCampos();
+
   Controller.PesquisarCEP(me_cep.Text, self);
 end;
 
@@ -75,6 +79,14 @@ end;
 procedure TFrmEndereco.FormCreate(Sender: TObject);
 begin
   Controller := TEnderecoController.Create;
+end;
+
+procedure TFrmEndereco.LimparCampos;
+begin
+  edt_logradouro.Clear;
+  edt_bairro    .Clear;
+  edt_cidade    .Clear;
+  cmb_estado.ItemIndex := 0;
 end;
 
 procedure TFrmEndereco.me_cepKeyDown(Sender: TObject; var Key: Word;

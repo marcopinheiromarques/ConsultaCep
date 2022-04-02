@@ -16,6 +16,7 @@ type
       Fdistrict   : string;
       Faddress    : string;
       FstatusText : string;
+      Fmessage    : string;
 
     protected
 
@@ -28,6 +29,7 @@ type
       property district   : string  read Fdistrict   write Fdistrict;
       property address    : string  read Faddress    write Faddress;
       property statusText : string  read FstatusText write FstatusText;
+      property message    : string  read Fmessage    write Fmessage;
   end;
 
 
@@ -63,23 +65,31 @@ begin
   self.FUrl := self.FUrl + pCep + '.json';
 
   try
+    //descomentar para simular um erro de servidor inativo
     //raise Exception.Create('Error Message');
 
     vdadosApi := self.getDadosCep<TApiCepApiData>();
 
     if (vdadosApi <> nil) then
     begin
-      Result            := TEndereco.Create;
-      Result.Cep        := vdadosApi.Fcode;
-      Result.Logradouro := vdadosApi.address;
-      Result.Bairro     := vdadosApi.district;
-      Result.Cidade     := vdadosApi.city;
-      Result.Estado     := vdadosApi.state;
+      if (vdadosApi.status = 200) then
+      begin
+        Result            := TEndereco.Create;
+        Result.Cep        := vdadosApi.Fcode;
+        Result.Logradouro := vdadosApi.address;
+        Result.Bairro     := vdadosApi.district;
+        Result.Cidade     := vdadosApi.city;
+        Result.Estado     := vdadosApi.state;
+      end
+      else if (vdadosApi.status = 404) then
+           begin
+             raise Exception.Create(vdadosApi.message);
+           end;
     end;
   except
     on E : Exception do
     begin
-
+      raise Exception.Create(E.Message);
     end;
   end;
 end;

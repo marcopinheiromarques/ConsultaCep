@@ -21,11 +21,12 @@ type
       FRESTRequest  : TRESTRequest;
       FRESTResponse : TRESTResponse;
       FUrl          : string;
+      FStatusCode   : Integer;
 
       function getDadosCep<T : class, constructor>() : T;
       function RetornaDadosCep(pCep: string) : TEndereco; virtual; abstract;
     public
-
+      property StatusCode : integer read FStatusCode;
   end;
 
 
@@ -33,13 +34,9 @@ implementation
 
 { TApiGenerica }
 
-
-
-{ TApiGenerica }
-
 function TApiGenerica.getDadosCep<T>: T;
 var
-  jValue  : TJSONValue;
+  vjValue     : TJSONValue;
 begin
   self.FRESTClient   := TRESTClient  .Create(nil);
   self.FRESTRequest  := TRESTRequest .Create(nil);
@@ -50,13 +47,20 @@ begin
   self.FRESTClient.BaseURL   := self.FUrl;
 
   try
-
-    self.FRESTRequest.Execute;
-    jValue := self.FRESTResponse.JSONValue;
-    Result := TJSON.JsonToObject<T>(jValue.ToString);
-
+    try
+      self.FRESTRequest.Execute;
+      self.FStatusCode := self.FRESTResponse.StatusCode;
+      vjValue          := self.FRESTResponse.JSONValue;
+      Result           := TJSON.JsonToObject<T>(vjValue.ToString);
+    except
+      on E : Exception do
+      begin
+        self.FStatusCode := self.FRESTResponse.StatusCode;
+        vjValue          := self.FRESTResponse.JSONValue;
+        Result           := TJSON.JsonToObject<T>(vjValue.ToString);
+      end;
+    end;
   finally
-
     if Assigned(self.FRESTClient) then
       FreeAndNil(self.FRESTClient);
 
@@ -65,7 +69,6 @@ begin
 
     if Assigned(self.FRESTResponse) then
       FreeAndNil( self.FRESTResponse);
-
   end;
 
 end;
