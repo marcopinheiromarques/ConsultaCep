@@ -1,0 +1,7 @@
+O que você entende por arquiterura MVC?
+
+Resposta: A arquitetura MVC, Model-View-Controller, é um padrão de arquitetura que divide o projeto em camadas onde cada camada possui funções bem definidas e separadas, facilitando a manutenção e organização.
+
+ Model      - Camada de modelo de dados e negócio;
+ View       - Camada de apresentação dos dados ao usuário. Onde o usuário poderá interagir com o sistema.
+ Controller - Camada responsável por atender as requisições feitas pelo usuário através da View, ou seja, faz a intermediação entre a View e a Model.     

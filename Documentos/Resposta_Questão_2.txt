@@ -1,0 +1,9 @@
+Escolha um padrão de projeto e escreva seu conceito, objetivo e um cenário de uso.
+
+Resposta: 
+
+Padrão de projeto Adapter
+  conceito: É um padrão de projeto qua faz com que objetos de classes com interfaces incompatíveis consigam trabalhar entre si.
+  objetivo: Converte a interface de uma classe incompatível em outra de forma que fique compatível com que um código cliente esteja esperando.
+  cenário de uso:  Por exemplo, quando se tem uma classe desenvolvida por terceiros para realizar um determinado trabalho e que a sua aplicação precisa desta classe, mas a interface é totalmente incompatível com a esperada pela aplicação, então se aplica o padrão Adapter para tornar a interface da classe desenvolvida por terceiros compatível com a interface esperada pela aplicação que irá usá-la.
+  Basicamente se cria uma terceira classe (Adaptador) que implementa a interface esperada mas que a sua implementação chama os métodos da classe desenvolvida por terceiros. 
