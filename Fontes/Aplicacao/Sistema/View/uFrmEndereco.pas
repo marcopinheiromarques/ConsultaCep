@@ -68,7 +68,11 @@ begin
 
   LimparCampos();
 
+  Screen.Cursor := crSQLWait;
+
   Controller.PesquisarCEP(me_cep.Text, self);
+
+  Screen.Cursor := crDefault;
 end;
 
 procedure TFrmEndereco.FormCloseQuery(Sender: TObject; var CanClose: Boolean);

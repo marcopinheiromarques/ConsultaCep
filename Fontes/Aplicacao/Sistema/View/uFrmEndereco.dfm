@@ -2171,6 +2171,7 @@ object FrmEndereco: TFrmEndereco
     Top = 27
     Width = 75
     Height = 25
+    Cursor = crHandPoint
     Caption = 'Pesquisar'
     TabOrder = 1
     OnClick = btn_pesquisarcepClick
