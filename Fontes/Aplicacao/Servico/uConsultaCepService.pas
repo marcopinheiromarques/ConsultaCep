@@ -32,12 +32,18 @@ begin
 
       if (Result = nil) then
       begin
+        if Assigned(self.FApiCep) then
+          self.FApiCep := nil;
+
         self.FApiCep := self.FFactoryApiCep.getApiCepService(taApiCep);
         Result       := self.FApiCep.RetornaDadosCep(pCep);
       end;
 
       if (Result = nil) then
       begin
+        if Assigned(self.FApiCep) then
+          self.FApiCep := nil;
+
         self.FApiCep := self.FFactoryApiCep.getApiCepService(taAwesomeApi);
         Result       := self.FApiCep.RetornaDadosCep(pCep);
       end;

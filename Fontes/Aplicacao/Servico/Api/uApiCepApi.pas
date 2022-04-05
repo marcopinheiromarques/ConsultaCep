@@ -65,9 +65,6 @@ begin
   self.FUrl := self.FUrl + pCep + '.json';
 
   try
-    //descomentar para simular um erro de servidor inativo
-    //raise Exception.Create('Error Message');
-
     vdadosApi := self.getDadosCep<TApiCepApiData>();
 
     if (vdadosApi <> nil) then

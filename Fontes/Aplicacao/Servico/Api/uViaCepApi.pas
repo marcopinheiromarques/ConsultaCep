@@ -70,9 +70,6 @@ begin
   self.FUrl  := self.FUrl + vCep + '/json/';
 
   try
-    //descomentar para simular um erro de servidor inativo
-    //raise Exception.Create('Error Message');
-
     vdadosApi  := self.getDadosCep<TViaCepData>();
 
     if (vdadosApi <> nil) then

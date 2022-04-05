@@ -32,6 +32,9 @@ type
 
 implementation
 
+uses uViaCepApi, uApiCepApi;
+
+
 { TApiGenerica }
 
 function TApiGenerica.getDadosCep<T>: T;
@@ -48,6 +51,16 @@ begin
 
   try
     try
+      //descomentar para para realizar testes de indisponibilidade
+      //nos serviços
+      {
+      if (TypeInfo(T) = TypeInfo(TViaCepData)) then
+        raise Exception.Create('Error Message');
+
+      if (TypeInfo(T) = TypeInfo(TApiCepApiData)) then
+        raise Exception.Create('Error Message');
+      }
+
       self.FRESTRequest.Execute;
       self.FStatusCode := self.FRESTResponse.StatusCode;
       vjValue          := self.FRESTResponse.JSONValue;
@@ -57,7 +70,11 @@ begin
       begin
         self.FStatusCode := self.FRESTResponse.StatusCode;
         vjValue          := self.FRESTResponse.JSONValue;
-        Result           := TJSON.JsonToObject<T>(vjValue.ToString);
+
+        if not Assigned(vjValue) then
+          Result := nil
+        else
+          Result := TJSON.JsonToObject<T>(vjValue.ToString);
       end;
     end;
   finally
